@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//tabelas do banco de dados
+// criar uma migração com o comando: yarn prisma migrate dev
+model Usuario {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  senha          String
+  email          String   @unique
+  status         Boolean  @default(true) //se é true está ativo
+  apelido        String?
+  dataNascimento String
+  tipoUsuario    Boolean  @default(false) //se é true é um administrador
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  avaliacaos Avaliacao[]
+}
+
+model Filme {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  diretor       String
+  anoLancamento String
+  duracao       Int
+  produtora     String
+  classificacao String
+  poster        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  avaliacaos Avaliacao[] //um filme pode ter várias avaliações
+  generos    GeneroFilme[]
+}
+
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  nota       Float
+  comentario String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  usuario    Usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+  usuario_id Int
+
+  filme    Filme @relation(fields: [filme_id], references: [id], onDelete: Cascade)
+  filme_id Int
+}
+
+model Genero {
+  id        Int      @id @default(autoincrement())
+  descricao String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  filmes GeneroFilme[]
+}
+
+model GeneroFilme {
+  id Int @id @default(autoincrement())
+
+  genero    Genero @relation(fields: [genero_id], references: [id], onDelete: Cascade)
+  genero_id Int
+
+  filme    Filme @relation(fields: [filme_id], references: [id], onDelete: Cascade)
+  filme_id Int
+}

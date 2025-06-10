@@ -1,0 +1,78 @@
+ts-node-dev -> para poder usar import sem precisar colocar require
+@types/express -> para mostrar os tipos do express e os erros do typescript
+bcryptjs -> para criptografar a senha
+dotenv -> para usar variaveis de ambiente
+yarn add multer -> trabalha com o envio de imagem
+yarn add axios -> O Axios é uma biblioteca JavaScript muito popular usada para fazer requisições HTTP
+
+//----ExcluirUsuarioService.ts -> forma deletar----
+
+import prismaClient from "../../prisma";
+
+interface ExcluirUsuarioRequest {
+  user_id: string;
+  id_deletar: string;
+};
+
+class ExcluirUsuarioService {
+  async execute({ user_id, id_deletar }: ExcluirUsuarioRequest) {
+
+    // Verifica se o usuário logado é um administrador
+    const usuarioLogado = await prismaClient.usuario.findFirst({
+      where: {
+        id: parseInt(user_id),
+        tipoUsuario: true, // Verifica se é admin
+      },
+    });
+
+    if (!usuarioLogado) {
+      throw new Error("Apenas administradores podem deletar usuários");
+    }
+
+    // Verifica se o usuário a ser deletado existe
+    const usuario = await prismaClient.usuario.findFirst({
+      where: {
+        id: parseInt(id_deletar),
+      },
+    });
+
+    if (!usuario) {
+      throw new Error("Usuário não encontrado");
+    }
+
+    // Deleta o usuário
+    try {
+      await prismaClient.usuario.delete({
+        where: {
+          id: parseInt(id_deletar),
+        },
+      });
+
+      return { message: "Usuário excluído com sucesso" };
+    } catch (error) {
+      throw new Error(`Erro ao excluir usuário: ${error}`);
+    };
+  };
+};
+
+export { ExcluirUsuarioService };
+
+
+//----ExcluirUsuarioController.ts----
+
+import { Request, Response } from "express";
+import { ExcluirUsuarioService } from "../../services/user/ExcluirUsuarioService";
+
+class ExcluirUsuarioController {
+    async handle(req: Request, res: Response) {
+      const { id } = req.params; // ID do usuário a ser deletado (vem da URL)
+      const user_id = req.user_id; // ID do usuário logado (vem do middleware)
+
+      const excluirUsuarioService = new ExcluirUsuarioService();
+
+      const usuario = await excluirUsuarioService.execute({ user_id: user_id, id_deletar: id });
+
+      return res.json(usuario);
+    }
+}
+export { ExcluirUsuarioController };
