@@ -10,7 +10,7 @@ export const validateSchema =
         req.body.generos = JSON.parse(req.body.generos);
       }
       console.log("Dados recebidos no middleware de validação:", req.body);
-      // Corrigindo a forma como os dados são passados para o schema
+      // Corrige a forma como os dados são passados para o schema
       await schema.parseAsync(req.body);
       return next();
     } catch (error) {

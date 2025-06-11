@@ -25,7 +25,7 @@ class ExcluirAvaliacaoService {
       throw new Error("Você não tem permissão para excluir esta avaliação");
     }
 
-    // Exclui a avaliação em cascata
+    
     await prismaClient.avaliacao.delete({
       where: { id: id_avaliacao },
     });
