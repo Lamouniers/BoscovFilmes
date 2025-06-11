@@ -9,9 +9,13 @@ class AutenticacaoUsuarioController {
         const { email, senha } = req.body; //pega os dados do body da requisição
             
         const autenticacaoService = new AutenticacaoUsuarioService();
-        const autenticacao = await autenticacaoService.execute({ email, senha }); //envia os dados para o service
-
-        return res.json(autenticacao); //retorna os dados para o front-end
+        
+        try {
+            const autenticacao = await autenticacaoService.execute({ email, senha }); //envia os dados para o service
+            return res.status(200).json(autenticacao); //retorna os dados para o front-end
+        } catch (err) {
+            return res.status(400).json({ message: err.message });
+        }
     }
 };
 

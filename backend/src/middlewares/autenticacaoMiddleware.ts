@@ -27,6 +27,7 @@ function AutenticacaoMiddleware(
             process.env.JWT_SECRET
         ) as Payload; //garante que o token venha com o id do usuario
 
+        console.log("ID do usuário extraído do token:", sub.sub);
         req.user_id = sub.sub; // recupera o id do token e coloca dentro de uma variavel user_id dentro do request
         
         return next();

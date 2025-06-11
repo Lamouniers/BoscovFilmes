@@ -10,9 +10,19 @@ class CriarUsuarioController {
         const { nome, email, senha, dataNascimento } = req.body;
 
         const criarUsuarioService = new CriarUsuarioService();
-        const user = await criarUsuarioService.execute({nome, email, senha, dataNascimento});
+        
+        try {
+            const user = await criarUsuarioService.execute({
+              nome,
+              email,
+              senha,
+              dataNascimento,
+            });
 
-        return res.json(user);
+            return res.status(201).json(user);
+        } catch (err) {
+            return res.status(400).json({ message: err.message });
+        }
     };
 };
 

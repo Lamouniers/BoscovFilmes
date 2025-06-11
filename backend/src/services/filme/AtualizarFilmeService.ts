@@ -15,6 +15,19 @@ interface AtualizarFilmeRequest {
 class AtualizarFilmeService {
   async execute({ user_id, id_filme, nome, diretor, anoLancamento, duracao, produtora, classificacao, poster }: AtualizarFilmeRequest) {
     // Verifica se o filme existe para poder ser atualizado
+
+    console.log("Dados recebidos no serviço:", {
+      user_id,
+      id_filme,
+      nome,
+      diretor,
+      anoLancamento,
+      duracao,
+      produtora,
+      classificacao,
+      poster,
+    });
+    
     const filme = await prismaClient.filme.findUnique({
       where: {
         id: id_filme,
@@ -41,17 +54,17 @@ class AtualizarFilmeService {
     }    
 
     // Verifica se ja existe um filme com o mesmo nome e ano de lançamento
-    const filmeJaExiste = await prismaClient.filme.findFirst({
-      where: {
-        nome: nome,
-        anoLancamento: anoLancamento,
-      },
-    });
+    //const filmeJaExiste = await prismaClient.filme.findFirst({
+    //  where: {
+    //    nome: nome,
+    //    anoLancamento: anoLancamento,
+    //  },
+    //});
 
 
-    if (filmeJaExiste) {
-      throw new Error("Filme já cadastrado");
-    }
+    //if (filmeJaExiste) {
+    //  throw new Error("Filme já cadastrado");
+    //}
 
     // Atualiza os dados do filme
     const filmeAtualizado = await prismaClient.filme.update({

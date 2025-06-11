@@ -395,12 +395,18 @@ router.delete("/filmes/:id", AutenticacaoMiddleware, new ExcluirFilmeController(
  *           schema:
  *             type: object
  *             properties:
- *               titulo:
+ *               nome:
  *                 type: string
  *               diretor:
  *                 type: string
- *               ano:
+ *               anoLancamento:
+ *                 type: string
+ *               duracao:
  *                 type: integer
+ *               produtora:
+ *                 type: string
+ *               classificacao:
+ *                 type: string
  *               poster:
  *                 type: string
  *                 format: binary

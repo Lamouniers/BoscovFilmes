@@ -20,6 +20,8 @@ class CriarFilmeController {
     const generosArray =
       typeof generos === "string" ? JSON.parse(generos) : generos;
 
+    console.log("Gêneros recebidos:", generosArray);
+    console.log("Gêneros recebidos no backend (antes do serviço):", generosArray);
     const criarFilmeService = new CriarFilmeService();
 
     // verifica se o arquivo foi enviado
