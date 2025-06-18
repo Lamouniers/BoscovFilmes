@@ -9,7 +9,6 @@ import { CriarUsuarioInput } from "../../validations/schemas";
 //   dataNascimento: string;
 // }
 
-// faz a logica de negocio no banco de dados
 class CriarUsuarioService {
   async execute({ nome, email, senha, dataNascimento }: CriarUsuarioInput) {
     // verifica se ele enviou um email
@@ -17,10 +16,9 @@ class CriarUsuarioService {
       throw new Error("Email incorreto");
     }
 
-    // verificar se o email ja existe na plataforma
     const usuarioExistente = await prismaClient.usuario.findFirst({
       where: {
-        email: email, // verifica se o email recebido é igual a algum email do banco de dados
+        email: email, 
       },
     });
 

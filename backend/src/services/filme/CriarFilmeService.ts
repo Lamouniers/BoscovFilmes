@@ -37,18 +37,6 @@ class CriarFilmeService {
       throw new Error("Você não tem permissão para criar filmes");
     }
 
-    // // Verifica se o filme já existe
-    // const filmeJaExiste = await prismaClient.filme.findFirst({
-    //   where: {
-    //     nome: nome,
-    //     anoLancamento: anoLancamento,
-    //   },
-    // });
-
-    // if (filmeJaExiste) {
-    //   throw new Error("Filme já cadastrado");
-    // }
-
     // Cria o filme e conecta os gêneros
     try {
       const filme = await prismaClient.filme.create({
@@ -75,7 +63,6 @@ class CriarFilmeService {
                   });
                 }
 
-                // Retorna o objeto para criar o relacionamento
                 return {
                   genero: { connect: { id: genero.id } },
                 };

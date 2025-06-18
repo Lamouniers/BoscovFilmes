@@ -12,7 +12,7 @@ class ExcluirFilmeController {
             const filme = await excluirFilmeService.execute({ id_filme: Number(id), user_id: Number(user_id) });
 
             return res.status(204).end(); // padrao de resposta 204 (sem conteúdo) para exclusão retorna 1
-            //ou return res.status(200).json({ message: "Filme excluído com sucesso" }); // Retorna uma mensagem de sucesso
+            //ou return res.status(200).json({ message: "Filme excluído com sucesso" });
         } catch (err) {
             return res.status(400).json(err.message);
         }

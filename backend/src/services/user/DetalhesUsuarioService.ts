@@ -16,7 +16,7 @@ class DetalhesUsuarioService {
             }
         });
 
-        return user; //retorna o usuario que foi encontrado no banco
+        return user;
     }
 }
 

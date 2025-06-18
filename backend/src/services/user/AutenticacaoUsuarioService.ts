@@ -15,7 +15,7 @@ class AutenticacaoUsuarioService {
       throw new Error("Email incorreto");
     }
 
-    // verificar se o email ja existe na plataforma
+    
     const usuario = await prismaClient.usuario.findFirst({
       where: {
         email: email, // verifica se o email recebido é igual a algum email do banco de dados
@@ -33,7 +33,7 @@ class AutenticacaoUsuarioService {
       throw new Error("Usuario/senha incorretos");
     }
 
-    //gerar o token de autenticação JWT para o usuario
+    //gera o token de autenticação JWT para o usuario
     const token = sign(
       {
         nome: usuario.nome,
